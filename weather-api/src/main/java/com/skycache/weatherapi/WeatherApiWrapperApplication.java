@@ -8,6 +8,7 @@ public class WeatherApiWrapperApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(WeatherApiWrapperApplication.class, args);
+		System.out.print("Hello from springboot");
 	}
 
 }
