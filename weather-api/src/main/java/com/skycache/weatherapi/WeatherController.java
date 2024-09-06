@@ -1,16 +1,18 @@
 package com.skycache.weatherapi;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/weather")
 public class WeatherController {
+    private final WeatherService weatherService;
+
+    public WeatherController(WeatherService weatherService) {
+        this.weatherService = weatherService;
+    }
 
     @GetMapping("/message")
     public String hello() {
@@ -18,9 +20,8 @@ public class WeatherController {
     }
 
     @GetMapping("/current")
-    public ResponseEntity<WeatherData> getCurrentWeather() {
-        // logic to get current weather
-        return null;
+    public String getWeather(@RequestParam double lat, @RequestParam double lon) {
+        return weatherService.getCurrentWeather(lat, lon);
     }
 
     @GetMapping("/forecast")
