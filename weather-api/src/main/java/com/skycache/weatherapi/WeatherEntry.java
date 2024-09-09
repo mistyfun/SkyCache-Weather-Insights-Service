@@ -1,12 +1,12 @@
 package com.skycache.weatherapi;
 
-import com.sun.tools.javac.Main;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public record WeatherEntry(
         long dt,
-        Main main,
+        @JsonProperty("main") Main main,
         List<Weather> weather,
         Clouds clouds,
         Wind wind,

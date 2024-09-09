@@ -51,26 +51,36 @@ public class WeatherService {
         String API_URL = "https://api.openweathermap.org/data/2.5/forecast?lat=%s&lon=%s&appid=%s";
         String url = String.format(API_URL, lat, lon, API_KEY);
         String jsonResponse = restTemplate.getForObject(url, String.class);
+        WeatherData weatherData = null;
         try {
-            // Map the JSON response directly to the WeatherResponse record
-            WeatherResponse weatherResponse = objectMapper.readValue(jsonResponse, WeatherResponse.class);
-
-            // Extract data from the mapped records
-            double temperature = weatherResponse.main().temp();
-            double feelsLike = weatherResponse.main().feels_like();
-            double humidity = weatherResponse.main().humidity();
-
-            // Weather is an array, so grab the first element
-            String description = weatherResponse.weather().get(0).description();
-            String feature = weatherResponse.weather().get(0).main();
-
-            // Convert temperature from Kelvin to Celsius and return the formatted string
-            return String.format("Weather: %s, LooksLike: %s, Temperature: %.2f°C", description, feature, temperature - 273.15);
+            weatherData = objectMapper.readValue(jsonResponse, WeatherData.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
-        catch (Exception e) {
-            e.printStackTrace();
-            return "Error fetching weather data";
+
+        if (weatherData != null && !weatherData.list().isEmpty()) {
+            WeatherEntry firstForecast = weatherData.list().get(0);  // Get the first item from the list
+
+            if (firstForecast.main() != null) {
+                double temperature = firstForecast.main().temp(); // Access temp
+                double feelsLike = firstForecast.main().feels_like();
+                double humidity = firstForecast.main().humidity();
+
+                String description = firstForecast.weather() != null && !firstForecast.weather().isEmpty()
+                        ? firstForecast.weather().get(0).description() : "No description";
+
+                System.out.printf("Temperature: %.2f°C, Feels Like: %.2f°C, Humidity: %.2f%%, Description: %s%n",
+                        temperature - 273.15,  // Convert from Kelvin to Celsius
+                        feelsLike - 273.15,
+                        humidity,
+                        description);
+            } else {
+                System.out.println("Main weather data is missing");
+            }
+        } else {
+            System.out.println("No weather data available");
         }
-        }
+        return " ";
+    }
 }
 
