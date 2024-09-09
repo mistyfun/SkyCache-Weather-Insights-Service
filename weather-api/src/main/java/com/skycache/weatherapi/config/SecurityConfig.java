@@ -14,10 +14,9 @@ public class SecurityConfig {
         // Disable CSRF for simplicity (optional, but generally required when using a REST API)
         http
                 .csrf(csrf -> csrf.disable()) // Use the new API to disable CSRF
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/**").permitAll()  // Allow unauthenticated access to /api/**
-                        .anyRequest().authenticated()            // Require authentication for all other requests
-                );
+                .authorizeRequests()
+                .anyRequest().permitAll();  // Allow access to all requests without authentication
+
 
         return http.build();
     }

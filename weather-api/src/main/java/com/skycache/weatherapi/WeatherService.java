@@ -12,7 +12,7 @@ import java.time.Duration;
 @Service
 public class WeatherService {
     private static final String API_KEY = "6b6278c371e51d00693d8c2fa91e6c83";
-    private static final String API_URL = "https://api.agromonitoring.com/agro/1.0/weather?lat=%s&lon=%s&appid=%s";
+    private static final String API_URL = "https://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&appid=%s";
     private final ObjectMapper objectMapper;
     private final RestTemplate restTemplate;
     @Autowired
