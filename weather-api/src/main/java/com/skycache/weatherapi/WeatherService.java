@@ -52,15 +52,20 @@ public class WeatherService {
         String url = String.format(API_URL, lat, lon, API_KEY);
         String jsonResponse = restTemplate.getForObject(url, String.class);
         try {
-            JsonNode root = objectMapper.readTree(jsonResponse);
-            JsonNode main = root.path("main");
-            JsonNode weather = root.path("weather");
-            double temperature = main.path("temp").asDouble();
-            double feelsLike = main.path("feels_like").asDouble();
-            double humidity = main.path("humidity").asDouble();
-            String description = weather.path("description").asText();
-            String feature = weather.path("main").asText();
-            return String.format("Weather: %s, LooksLike: ,Temperature: %.2f°C", description, feature, temperature - 273.15); // Convert from Kelvin to Celsius
+            // Map the JSON response directly to the WeatherResponse record
+            WeatherResponse weatherResponse = objectMapper.readValue(jsonResponse, WeatherResponse.class);
+
+            // Extract data from the mapped records
+            double temperature = weatherResponse.main().temp();
+            double feelsLike = weatherResponse.main().feels_like();
+            double humidity = weatherResponse.main().humidity();
+
+            // Weather is an array, so grab the first element
+            String description = weatherResponse.weather().get(0).description();
+            String feature = weatherResponse.weather().get(0).main();
+
+            // Convert temperature from Kelvin to Celsius and return the formatted string
+            return String.format("Weather: %s, LooksLike: %s, Temperature: %.2f°C", description, feature, temperature - 273.15);
         }
         catch (Exception e) {
             e.printStackTrace();
