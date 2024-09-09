@@ -25,9 +25,9 @@ public class WeatherController {
     }
 
     @GetMapping("/forecast")
-    public ResponseEntity<List<ForecastData>> getWeatherForecast() {
+    public String getWeatherForecast(@RequestParam double lat, @RequestParam double lon) {
         // logic to get weather forecast
-        return null;
+        return weatherService.getForecastWeather(lat, lon);
     }
 
     @GetMapping("/historical")
