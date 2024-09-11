@@ -1,4 +1,4 @@
-package com.skycache.weatherapi;
+package com.skycache.weatherapi.weatherRecords;
 
 public record Wind(
         double speed,

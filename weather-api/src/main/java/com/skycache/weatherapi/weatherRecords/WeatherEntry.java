@@ -1,7 +1,8 @@
-package com.skycache.weatherapi;
+package com.skycache.weatherapi.weatherRecords;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record WeatherEntry(

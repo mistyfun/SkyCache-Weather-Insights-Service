@@ -3,17 +3,17 @@ package com.skycache.weatherapi;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.skycache.weatherapi.weatherRecords.WeatherData;
+import com.skycache.weatherapi.weatherRecords.WeatherEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.Duration;
-
 @Service
 public class WeatherService {
-    private static final String API_KEY = "6b6278c371e51d00693d8c2fa91e6c83";
 
+    private static final String API_KEY = "";
     private final ObjectMapper objectMapper;
     private final RestTemplate restTemplate;
     @Autowired
