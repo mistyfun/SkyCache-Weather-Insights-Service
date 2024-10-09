@@ -3,14 +3,15 @@ package com.flowerGo.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
 public class WeatherService {
-
-    private static final String API_KEY = "";
+    @Value("${openweather.api.key}")
+    private String apiKey;
     private final ObjectMapper objectMapper;
     private final RestTemplate restTemplate;
     @Autowired
@@ -24,7 +25,7 @@ public class WeatherService {
 
     public String getCurrentWeather(double lat, double lon) {
         String API_URL = "https://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&appid=%s";
-        String url = String.format(API_URL, lat, lon, API_KEY);
+        String url = String.format(API_URL, lat, lon, apiKey);
         try {
             // Send HTTP GET request
             String jsonResponse = restTemplate.getForObject(url, String.class);

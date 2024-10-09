@@ -4,6 +4,8 @@ import {useEffect, useState} from "react";
 
 function App() {
   const [message, setMessage] = useState();
+  const [location, setLocation] = useState(null);
+  const [error, setError] = useState(null);
 
   // Fetch the data from the backend when the component is mounted
   useEffect(() => {
@@ -15,6 +17,26 @@ function App() {
         .catch((error) => {
           console.error("Error fetching data:", error);
         });
+
+    // Get the user's location
+    const getLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const lat = position.coords.latitude;
+              const lon = position.coords.longitude;
+              setLocation({ lat, lon });
+            },
+            (err) => {
+              setError('Unable to retrieve your location. Please check your browser settings.');
+            }
+        );
+      } else {
+        setError('Geolocation is not supported by this browser.');
+      }
+    };
+
+    getLocation();
   }, []);
   return (
     <div className="App">
@@ -33,6 +55,13 @@ function App() {
         </a>
         <h1>Message from Backend:</h1>
         <p>{message}</p> {/* Display the fetched message */}
+        {/* Display user's location */}
+        {error && <p>{error}</p>} {/* Show error if there's an issue */}
+        {location ? (
+            <p>Your location: Latitude: {location.lat}, Longitude: {location.lon}</p>
+        ) : (
+            <p>Loading location...</p>
+        )}
       </header>
     </div>
   );
